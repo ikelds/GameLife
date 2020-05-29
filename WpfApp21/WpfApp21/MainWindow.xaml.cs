@@ -1,16 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace WpfApp21
@@ -23,7 +16,6 @@ namespace WpfApp21
         public MainWindow()
         {
             InitializeComponent();
-            //ChangeColorPeriodically();
         }
 
         int heightSize = 90;
@@ -50,9 +42,7 @@ namespace WpfApp21
                     cell[i, j] = new Rectangle();
                     Grid.SetColumn(cell[i, j], j);
                     Grid.SetRow(cell[i, j], i);
-                    //rField[i, j].MouseDown += this.rctnField_MouseDown;
                     cell[i, j].MouseDown += this.cell_MouseDown;
-                    
                     cell[i, j].Stroke = Brushes.Black;
                     cell[i, j].StrokeThickness = 0.09;
                     cell[i, j].Height = 10;
@@ -65,22 +55,9 @@ namespace WpfApp21
 
         private void cell_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            var item = sender as Rectangle;
+            Rectangle item = sender as Rectangle;
             item.Fill = Brushes.DarkGreen;
         }
-
-
-        //async Task ChangeColorPeriodically()
-        //{
-        //    while (true)
-        //    {
-        //        await Task.Delay(1000); // <--
-        //        if (cell[1, 1].Fill == Brushes.Black)
-        //            cell[1, 1].Fill = Brushes.White;
-        //        else
-        //            cell[1, 1].Fill = Brushes.Black;
-        //    }
-        //}
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -91,20 +68,25 @@ namespace WpfApp21
                 for (int j = 0; j < widthSize; j++)
                 {
                     if (r.Next(2) == 1)
+                    {
                         cell[i, j].Fill = Brushes.DarkGreen;
+                    }
+                        
                     else
+                    {
                         cell[i, j].Fill = Brushes.White;
+                    }                        
                 }
             }
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            neighbors();
+            Neighbors();
         }
 
         bool startStop = false;
-        async void neighbors()
+        async void Neighbors()
         {            
             int sumNeighbors;
             int[,] nextGen = new int[heightSize, widthSize];
@@ -120,9 +102,7 @@ namespace WpfApp21
                 {
                     for (int j = 0; j < widthSize; j++)
                     {
-                        //await Task.Delay(2000);
                         sumNeighbors = 0;
-                        
 
                         if ((i - 1 >= 0) && (j - 1 >= 0))
                         {
@@ -135,14 +115,12 @@ namespace WpfApp21
                             if (cell[i - 1, j].Fill == Brushes.DarkGreen)
                                 sumNeighbors ++;
                         }
-                            
 
                         if (i - 1 >= 0 && j + 1 < widthSize)
                         {
                             if (cell[i - 1, j + 1].Fill == Brushes.DarkGreen)
                                 sumNeighbors ++ ;
                         }
-                            
 
                         if (j - 1 >= 0)
                         {
@@ -150,27 +128,23 @@ namespace WpfApp21
                                 sumNeighbors ++ ;
                         }
                             
-
                         if (j + 1 < widthSize)
                         {
                             if (cell[i, j + 1].Fill == Brushes.DarkGreen)
                                 sumNeighbors ++ ;
                         }
                             
-
                         if ((i + 1 < heightSize) && (j - 1 >= 0))
                         {
                             if (cell[i + 1, j - 1].Fill == Brushes.DarkGreen)
                                 sumNeighbors ++ ;
                         }
-                            
 
                         if (i + 1 < heightSize)
                         {
                             if (cell[i + 1, j].Fill == Brushes.DarkGreen)
                                 sumNeighbors ++ ;
                         }
-                            
 
                         if ((i + 1 < heightSize) && (j + 1 < widthSize))
                         {
@@ -178,15 +152,11 @@ namespace WpfApp21
                                 sumNeighbors ++ ;
                         }
 
-                        //MessageBox.Show("Кол-во соседей = " + sumNeighbors);
-                        
-
+                        // Рождение новой клетки.
                         if (cell[i, j].Fill == Brushes.White && sumNeighbors == 3)
                         {
-                            //MessageBox.Show("Рождение новой клетки: " + i + " " + j);
                             nextGen[i, j] = 1;
                         }
-                            
 
                         if (cell[i, j].Fill == Brushes.DarkGreen)
                         {
@@ -197,20 +167,16 @@ namespace WpfApp21
                     }
                 }
 
-
-
-
                 for (int i = 0; i < heightSize; i++)
                 {
                     for (int j = 0; j < widthSize; j++)
                     {
                         if (nextGen[i, j] == 0)
+                        {
                             cell[i, j].Fill = Brushes.White;
+                        }                            
                         else
                         {
-                            //MessageBox.Show("Сработало:\ncell[i, j].Fill = Brushes.DarkGreen;");
-                            //MessageBox.Show("Клетка с индексом: " + i +
-                             //   ", " + j + " = зеленая");
                             cell[i, j].Fill = Brushes.DarkGreen;
                         }                            
                     }
